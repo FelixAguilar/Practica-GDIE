@@ -1,0 +1,25 @@
+<!DOCTYPE html> 
+<html>
+    <head> 
+        <style>
+            .svginside > * { position: absolute;}
+            .svgbutton path { pointer-events: none; }  
+        </style>
+        <script src="reproductor.js"></script>
+    </head>
+    <body>
+        <div id="controls" class="svginside">
+            <video id="myVideo" height="270px" width="480px" autobuffer muted>
+                <source src="../video/Japan-1080p.mp4" type='video/mp4' >
+                Your browser does not support the video tag
+            </video>
+            <svg id="control" height="270px" width="480px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+                <g class="svgbutton">
+                <circle stroke="black" fill="transparent" fill-opacity="0" stroke-width="12" cx="240" cy="135" r="40" onclick="togglevideo();"/>
+                <path class="play" fill="black" d="M 230 120 v 30 l 25 -15 Z"/>
+                <path class="pause" stroke-width="12" stroke="black" d="M 230 120 v 30 m 16 -30 v 30"/>
+            </g> 
+            </svg> 
+        </div>
+    </body> 
+</html>
