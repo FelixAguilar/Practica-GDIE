@@ -1,0 +1,33 @@
+<!DOCTYPE html> 
+<html>
+    <head> 
+        <link rel="stylesheet" href="../compartido/player.css">
+        <script src="../compartido/player.js"></script>
+    </head>
+    <body>
+        <div class="flex-container-col">
+            <div> 
+                <video id="video" autobuffer muted>
+                    <source src="../video/Japon4k24nanf.mp4" type="video/mp4">
+                    Your browser does not support the video tag
+                </video>
+                <svg id="svg" class="screenbuttons" height="270px" width="480px"   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+                    <g id="play"></g>
+                    <g id="back"></g>
+                    <g id="foward"></g>
+                </svg>     
+            </div>
+            <div class="flex-container-row">
+                <div class="flex-cell-text">
+                    <span id="current">00:00</span> / <span id="duration">00:00</span>
+                </div>
+                <div class="flex-cell-full">
+                    <div class="tooltip">
+                        <progress id="bar" value=0></progress>
+                        <span id="tooltip-span"></span>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </body> 
+</html>
