@@ -93,7 +93,7 @@ var onProgressBarClick = function(e){
 var onProgressBarHover = function(e){ 
     var sec = jumptime(e.pageX);
     if(sec > -1){
-        var tooltipSpan = document.getElementById('tooltip-span');
+        var tooltipSpan = document.getElementById('bar-tooltip-span');
         tooltipSpan.style.top = (e.clientY + 15) + 'px';
         tooltipSpan.style.left = (e.clientX - 25) + 'px';
         tooltipSpan.innerHTML = time(sec);
@@ -171,13 +171,13 @@ function backVideo() {
 
 // Funcion que añade el player al contenedor indicado por parametro.
 function player(div){
-    var s = '<div class="flex-container-col"><div><video id="video" autobuffer muted>';
+    var s = '<div class="flex-container-col"><div class="outer"><video id="video" autobuffer muted>';
     
     for(v of videos){
         s += '<source src="' + v[0] + '" type="' + v[1] + '">';
     }
     
-    s += 'Your browser does not support the video tag</video><svg id="svg" class="screenbuttons" height="270px" width="480px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g id="play"></g><g id="back"></g><g id="foward"></g></svg></div><div class="flex-container-row"><div class="flex-cell-text"><span id="current">00:00</span> / <span id="duration">00:00</span></div><div class="flex-cell-full"><div class="tooltip"><progress id="bar" value=0></progress><span id="tooltip-span"></span></div></div></div></div>'
+    s += 'Your browser does not support the video tag</video><svg id="svg" class="screenbuttons" height="270px" width="480px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g id="play"></g><g id="back"></g><g id="foward"></g></svg></div><div class="flex-container-row"><div class="flex-cell-text"><span id="current">00:00</span> / <span id="duration">00:00</span></div><div class="flex-cell-full"><div class="bar-tooltip"><progress id="bar" value=0></progress><span id="bar-tooltip-span"></span></div></div></div></div>'
     
     document.getElementById(div).innerHTML = s;
 }
