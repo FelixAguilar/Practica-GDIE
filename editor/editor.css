@@ -33,3 +33,17 @@
     margin: auto;
 }
 
+/*Estilos nav*/
+.ifMenu {
+width: 100%;
+height: 50px;
+}
+
+/*Estilos footer*/
+.ifFooter {
+    width: 100%;
+    height: 30%;
+    padding-bottom: 0% ;
+    bottom: 0 !important;
+    position: absolute;
+}
