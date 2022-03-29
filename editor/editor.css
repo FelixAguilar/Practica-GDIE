@@ -1,49 +1,80 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
 
-.grid{
+.grid {
     display: grid;
-    grid-template-columns: auto auto;
-    grid-template-rows: auto auto auto;
-    grid-template-areas: 
-    "navbar navbar"
-    "video map"
-    "footer footer";
-
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 0.2fr 2.9fr 0.6fr 0.3fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas: "navbar  navbar" "controlplayer  map" "controlplayer  text" "footer  footer";
 }
-.navbar{
+
+.navbar {
     grid-area: navbar;
 }
-.footer{
+
+.footer {
     grid-area: footer;
 }
-.btons{
-    align-self: center;
-   justify-self: center;
-}
-.video{
-    grid-area: video;
-    margin: auto;
-}
-.map{
+
+.map {
     grid-area: map;
+    width: 95%;
+    margin-top: 40px;
+    margin-left: 40px;
     display: block;
-    margin: auto;
 }
+
+.text {
+    grid-area: text;
+    margin: auto;
+    margin-right: 40px;
+    margin-bottom: 40px;
+    display: block;
+}
+
+.controlplayer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 2fr 0.1fr;
+    ;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas: "player player player" "player player player" "control control control";
+    grid-area: controlplayer;
+}
+
+.player {
+    grid-area: player;
+    width: 95%;
+    height: 100%;
+    margin: auto;
+    margin-top: 40px;
+    display: block;
+}
+
+.control {
+    grid-area: control;
+    margin-left: 20px;
+}
+
 
 /*Estilos nav*/
+
 .ifMenu {
-width: 100%;
-height: 50px;
+    width: 100%;
+    height: 50px;
 }
 
+
 /*Estilos footer*/
+
 .ifFooter {
     width: 100%;
-    height: 30%;
-    padding-bottom: 0% ;
+    height: 175px;
+    padding-bottom: 0%;
     bottom: 0 !important;
-    position: absolute;
 }
