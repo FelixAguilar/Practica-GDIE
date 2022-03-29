@@ -5,11 +5,11 @@
 
 .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 0.2fr 2.9fr 0.6fr 0.3fr;
+    grid-template-columns: 1fr 0.1fr;
+    grid-template-rows: 0.5fr 1fr 0.5fr 1fr 1fr 1fr ;
     gap: 0px 0px;
     grid-auto-flow: row;
-    grid-template-areas: "navbar  navbar" "controlplayer  map" "controlplayer  text" "footer  footer";
+    grid-template-areas: "navbar  navbar" "player  player" "control control" "map map" "text  text" "footer  footer";
 }
 
 .navbar {
@@ -22,7 +22,7 @@
 
 .map {
     grid-area: map;
-    width: 95%;
+    width: auto;
     margin-top: 40px;
     margin-left: 40px;
     display: block;
@@ -33,6 +33,7 @@
     margin: auto;
     margin-right: 40px;
     margin-bottom: 40px;
+    margin-left: 40px;
     display: block;
 }
 
@@ -53,12 +54,13 @@
     height: 100%;
     margin: auto;
     margin-top: 40px;
+    margin-left: 40px;
     display: block;
 }
 
 .control {
     grid-area: control;
-    margin-left: 20px;
+    margin-left: 40px;
 }
 
 
@@ -77,4 +79,26 @@
     height: 175px;
     padding-bottom: 0%;
     bottom: 0 !important;
+}
+
+@media screen and (min-width: 736px) {
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 0.2fr 2.9fr 0.6fr 0.3fr;
+        gap: 0px 0px;
+        grid-auto-flow: row;
+        grid-template-areas: "navbar  navbar" "controlplayer  map" "controlplayer  text" "footer  footer";
+    }
+    .footer {
+        grid-area: footer;
+    }
+    .map {
+        grid-area: map;
+       
+        margin-top: 40px;
+        margin-left: 40px;
+        display: block;
+    }
+   
 }
