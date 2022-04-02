@@ -10,7 +10,10 @@ var videos = [
     ["../video/Japon4k24nanf.mp4","video/mp4"]
 ];
 var contenedor = "player";
-
+window.onload = function(){
+    player_start();
+    editor_start();
+}
 function player_start() {
     
     player(contenedor);

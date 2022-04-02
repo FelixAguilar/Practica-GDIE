@@ -14,8 +14,8 @@
 
 .navbar {
     grid-area: navbar;
+    height: 80px;
 }
-
 .footer {
     grid-area: footer;
 }
@@ -99,6 +99,11 @@
         margin-top: 40px;
         margin-left: 40px;
         display: block;
+    }
+
+    .navbar {
+        grid-area: navbar;
+        height: 50px;
     }
    
 }
