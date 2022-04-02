@@ -11,7 +11,7 @@ var videos = [
 ];
 var contenedor = "player";
 
-window.onload = function () {
+function player_start() {
     
     player(contenedor);
     
@@ -29,8 +29,7 @@ window.onload = function () {
     svg = document.getElementById("svg");
     svg.addEventListener("mousemove", showControls);
     
-    screenButtons();
-    
+    screenButtons();   
 }
 
 // Devuelve un string con el tiempo que se da en segundos.
@@ -145,6 +144,13 @@ function isPlaying(video) {
 function toggleVideo() {
     !isPlaying(vid) ? vid.play() : vid.pause(); 
     updatePlay();
+}
+
+function pause(){
+    if(isPlaying(vid)){
+        vid.pause(); 
+        updatePlay();
+    }
 }
 
 // Avanza el video 5 segundos si no puede porque es mayor que la duracion, 
