@@ -34,33 +34,38 @@ function getEndSegmentTime(){
 // Añade un nuevo segmento en el json.
 function addSegment(){
     pause();
-    if(type){
-        if(tlat.value != "" && tlon.value != "" && tdes.value != ""){
-            var i = deleteSegment();
+    if(tini.value < tfin.value){
+        if(type){
+            if(tlat.value != "" && tlon.value != "" && tdes.value != "") {
+                var i = deleteSegment();
         
-            var ti = "00:" + tini.value + ".001";
-            var tf = "00:" + tfin.value + ".000";
-            var tl = tlat.value;
-            var tg = tlat.value;
-            var td = tlat.value;
-            json.splice(i, 0, {inicio:ti, fin:tf, latitud:tl, longitud:tg, descripcion:td});
-            document.getElementById("show").innerHTML = showVTT();
-        } else {
-            window.alert("Introduce metadatos.");
+                var ti = "00:" + tini.value + ".001";
+                var tf = "00:" + tfin.value + ".000";
+                var tl = tlat.value;
+                var tg = tlon.value;
+                var td = '"' + tdes.value + '"';
+                json.splice(i, 0, {inicio:ti, fin:tf, latitud:tl, longitud:tg, descripcion:td});
+                document.getElementById("show").innerHTML = showVTT();
+            } else {
+                window.alert("Introduce metadatos.");
+            }
+        }else{
+            if(ttex.value != ""){
+                var i = deleteSegment();
+        
+                var ti = "00:" + tini.value + ".001";
+                var tf = "00:" + tfin.value + ".000";
+                var tt = ttex.value;
+                json.splice(i, 0, {inicio:ti, fin:tf, texto:tt});
+                document.getElementById("show").innerHTML = showVTT();
+            } else {
+                window.alert("Introduce subtitulo.");
+            }
         }
     }else{
-        if(ttex.value != ""){
-            var i = deleteSegment();
-        
-            var ti = "00:" + tini.value + ".001";
-            var tf = "00:" + tfin.value + ".000";
-            var tt = ttex.value;
-            json.splice(i, 0, {inicio:ti, fin:tf, texto:tt});
-            document.getElementById("show").innerHTML = showVTT();
-        } else {
-            window.alert("Introduce subtitulo.");
-        }
+        window.alert("El inicio no puede ser mayor o igual que el final.")
     }
+    
     
 }
 
