@@ -1,3 +1,4 @@
+
 var vid;
 var tracks;
 var sub = null;
@@ -62,4 +63,14 @@ function subtitulos(leng){
         sub = leng;
     }
     
+}
+
+function togglemute(){
+    if(vid.muted){
+        vid.muted = false;
+        document.getElementById("auEsp").value = "Con Volumen";
+    } else {
+        vid.muted = true;
+        document.getElementById("auEsp").value = "Sin Volumen";
+    }
 }

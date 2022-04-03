@@ -1,8 +1,8 @@
 <?php
 
 if(isset($_POST["name"])){
-    $type = str_contains($_POST["name"], "meta");
-    $file = fopen("../video/".$_POST["name"], "r") or die("Unable to open file!");
+    $type = strstr($_POST["name"], "meta");
+    $file = fopen("/var/www/html/video/".$_POST["name"], "r") or die("Unable to open file!");
     $JSON = array();
     fgets($file);
     while(!feof($file)) {

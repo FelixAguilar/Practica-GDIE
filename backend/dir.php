@@ -1,9 +1,9 @@
 <?php
 
-$dir = scandir("../video/");
+$dir = scandir('/var/www/html/video/');
 $res = array();
 for($i = 2; $i < count($dir); ++$i){
-    if(str_ends_with($dir[$i], "vtt")){
+    if(strstr($dir[$i], "vtt")){
         array_push($res,$dir[$i]);  
     }
 }
