@@ -9,6 +9,7 @@
     <script src="../compartido/player.js"></script>
 
     <link rel="stylesheet" href="reproductor.css">
+    <script src="reproductor.js"></script>
 
     <!-- Bootstrap 5. -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -31,34 +32,29 @@
                         role="button">Reproductor</a>
                     <a class="btn  btn-outline-success me-2 external" href="../editor/editor.html" role="button">Editor</a>
                 </div>
+            </div>
         </nav>
 
         <div class="videocontrol">
 
-          <div class="player" id="player">
-
-            </div>
+          <div class="player" id="player"></div>
+            
             <div class="control">
               <br />
               <input type="button" class="btn  btn-outline-success me-2 external" id="auEsp" onclick="setInicioSegmento()" value="Audio español">
               &nbsp;
               <input type="button" class="btn  btn-outline-success me-2 external" id="aujap" onclick="setInicioSegmento()" value="audio japonés">
               &nbsp;
-              <input type="button" class="btn  btn-outline-success me-2 external" id="subEsp" onclick="setInicioSegmento()" value="Subtitulo español">
+              <input type="button" class="btn  btn-outline-success me-2 external" id="subEsp" onclick="subtitulo_es()" value="Subtitulo español">
               &nbsp;
-              <input type="button" class="btn  btn-outline-success me-2 external" id="subJap" onclick="setInicioSegmento()" value="Subtítulo japonés">
+              <input type="button" class="btn  btn-outline-success me-2 external" id="subJap" onclick="subtitulo_jp()" value="Subtítulo japonés">
               
 
           </div>
         </div>
 
-        <div class="text">
-
-            <p> Shibuya (渋谷区 Subyace) es una región especial de la Metrópolis de Tokio, en Japón. Está ubicada en la línea circular de tren Ayamonte en el oeste de la Metrópolis de Tokio, un poco al sur de Shinjuku.</p>
-            <p> Shibuya fue fundada el 15 de marzo de 1947. Según datos de 2008, la región especial tiene una población de 208.371 habitantes y una densidad de 13.540 personas por km². El área total es de 15,11 km².</p>
-
-        </div>
-        <div class="map">
+        <div class="text" id="descrip"></div>
+        <div class="map" id="map">
             <iframe src="https://maps.google.com/maps?q=39.636482,
                     2.646277&z=15&output=embed" frameborder="0" style="width:100%; height:500px;overflow:auto;"></iframe>
         </div>

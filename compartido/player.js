@@ -7,13 +7,11 @@ var timer; // Contador en segundos de cuanto tardará en ocultar los controles.
 // [src1,type1],
 // [src2,type2]
 var videos = [
-    ["../video/Japon4k24nanf.mp4","video/mp4"]
+    ["../video/japon.mp4","video/mp4"],
+    ["../video/japon.webm","video/webm"]
 ];
 var contenedor = "player";
-window.onload = function(){
-    player_start();
-    editor_start();
-}
+
 function player_start() {
     
     player(contenedor);
@@ -185,6 +183,10 @@ function player(div){
     for(v of videos){
         s += '<source src="' + v[0] + '" type="' + v[1] + '">';
     }
+    
+    s += '<track label="español" kind="subtitles" srclang="es" src="../video/japon_es.vtt">';
+    s += '<track label="japones" kind="subtitles" srclang="jp" src="../video/japon_jp.vtt">';
+    s += '<track label="descripcion" kind="metadata" srclang="es" src="../video/japon_meta.vtt">';
     
     s += 'Your browser does not support the video tag</video><svg id="svg" class="screenbuttons" height="270px" width="480px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g id="play"></g><g id="back"></g><g id="foward"></g></svg></div><div class="flex-container-row"><div class="flex-cell-text"><span id="current">00:00</span> / <span id="duration">00:00</span></div><div class="flex-cell-full"><div class="bar-tooltip"><progress id="bar" value=0></progress><span id="bar-tooltip-span"></span></div></div></div></div>'
     
