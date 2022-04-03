@@ -17,7 +17,7 @@ if(isset($_POST["name"])){
             $line = fgets($file);
             $longitude = substr($line, strrpos($line, " ", 0) + 1, -2);
             $line = fgets($file);
-            $description = substr($line, strrpos($line, " ", 0) + 1, -1);
+            $description = substr($line, strpos($line, " ", 0) + 1, -1);
             fgets($file);
             $obj = array("inicio"=>$inicio, "fin"=>$fin, "latitud"=>$latitude, "longitud"=>$longitude, "descripcion"=>$description);
             array_push($JSON,$obj);
