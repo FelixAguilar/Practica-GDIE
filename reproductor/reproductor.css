@@ -6,7 +6,7 @@
 .grid {
     display: grid;
     grid-template-columns: 1fr ;
-    grid-template-rows: 0.2fr 0.5fr 0.1fr 0.8fr 0.7fr 0.1fr ;
+    grid-template-rows: 1fr ;
     gap: 0px 0px;
     grid-auto-flow: row;
     grid-template-areas: "navbar " "player " "control" "map" "text " "footer ";
@@ -82,7 +82,7 @@
     .grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 0.2fr 2.9fr 0.6fr 0.3fr;
+        grid-template-rows: 1fr;
         gap: 0px 0px;
         grid-auto-flow: row;
         grid-template-areas: "navbar  navbar" "controlplayer  map" "text  text" "footer  footer";
