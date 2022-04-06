@@ -105,12 +105,12 @@ function screenButtons(){
     var svgY = svg.getBoundingClientRect().bottom;
     var svgX = svg.getBoundingClientRect().right;
     
-    document.getElementById("play").innerHTML = '<path class="play" fill="black" d="M ' + (svgX/2 - 10) + ' ' + (svgY/2 - 15) + ' v 30 l 25 -15 Z"/> <path class="pause" stroke-width="12" stroke="black" d="M '+ (svgX/2 - 10) + ' ' + (svgY/2 - 15) +' v 30 m 16 -30 v 30"/><circle stroke="black" fill="transparent" fill-opacity="0" stroke-width="12" cx="' + svgX/2 + '" cy="' + svgY/2 + '" r="' + 40 + '" onclick="toggleVideo();"/> ';
+    document.getElementById("play").innerHTML = '<path class="play" fill="green" d="M ' + (svgX/2 - 10) + ' ' + (svgY/2 - 15) + ' v 30 l 25 -15 Z"/> <path class="pause" stroke-width="12" stroke="green" d="M '+ (svgX/2 - 10) + ' ' + (svgY/2 - 15) +' v 30 m 16 -30 v 30"/><circle stroke="black" fill="black" fill-opacity="0" stroke-width="12" cx="' + svgX/2 + '" cy="' + svgY/2 + '" r="' + 40 + '" onclick="toggleVideo();"/> ';
     
-    document.getElementById("foward").innerHTML = '<path fill="black" d="M ' + (svgX*2/3 + 1) + ' ' + (svgY/2 - 8) + ' v16 l13 -8 z"/><path fill="black" d="M ' + (svgX*2/3 - 11) + ' ' + (svgY/2 - 8) + ' v16 l13 -8 z"/><circle stroke="black" fill="transparent" fill-opacity="0" stroke-width="6" cx="' + svgX*2/3 + '" cy="' + svgY/2 + '" r="' + 20 + '" onclick="fowardsVideo();"/> ';
+    document.getElementById("foward").innerHTML = '<path fill="green" d="M ' + (svgX*2/3 + 1) + ' ' + (svgY/2 - 8) + ' v16 l13 -8 z"/><path fill="green" d="M ' + (svgX*2/3 - 11) + ' ' + (svgY/2 - 8) + ' v16 l13 -8 z"/><circle stroke="black" fill="black" fill-opacity="0" stroke-width="6" cx="' + svgX*2/3 + '" cy="' + svgY/2 + '" r="' + 20 + '" onclick="fowardsVideo();"/> ';
     
     
-    document.getElementById("back").innerHTML = '<path fill="black" d="M ' + (svgX/3 - 1) + ' ' + (svgY/2 - 8) + ' v16 l-13 -8 z"/><path fill="black" d="M ' + (svgX/3 + 11) + ' ' + (svgY/2 - 8) + ' v16 l-13 -8 z"/><circle stroke="black" fill="transparent" fill-opacity="0" stroke-width="6" cx="' + svgX/3 + '" cy="' + svgY/2 + '" r="' + 20 + '" onclick="backVideo();"/> ';
+    document.getElementById("back").innerHTML = '<path fill="green" d="M ' + (svgX/3 - 1) + ' ' + (svgY/2 - 8) + ' v16 l-13 -8 z"/><path fill="green" d="M ' + (svgX/3 + 11) + ' ' + (svgY/2 - 8) + ' v16 l-13 -8 z"/><circle stroke="black" fill="black" fill-opacity="0" stroke-width="6" cx="' + svgX/3 + '" cy="' + svgY/2 + '" r="' + 20 + '" onclick="backVideo();"/> ';
     
     updatePlay();
 }
