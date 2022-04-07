@@ -1,20 +1,23 @@
-var vid; // Video.
+var videos; // JSON con todos los videos del servidor.
+var selector; // selector de videos.
+var vid; // Video en reproduccion.
 var bar; // Barra de progreso del video.
 var svg; // Controles del video.
 var timer; // Contador en segundos de cuanto tardará en ocultar los controles.
 
-// Variable que añade el source y tipo de video, formato de este es:
-// [src1,type1],
-// [src2,type2]
-var videos = [
-    ["../video/japon.mp4","video/mp4"],
-    ["../video/japon.webm","video/webm"]
-];
-var contenedor = "player";
+var contenedor = "player"; //contenedor en el cual se pondrá el player.
 
-function player_start() {
+// Inicia el player en la web por primera vez.
+function player_start() {  
+    selector = document.getElementById("selectvideo");
+    getvideos();
+    setvideo();  
+}
+
+// Inicia el video correspondiente al parametro con todos los eventos.
+function setvideo(){
     
-    player(contenedor);
+    player(selector.value);
     
     vid = document.getElementsByTagName("video")[0];
     vid.addEventListener("timeupdate", onTimeChange);
@@ -30,7 +33,7 @@ function player_start() {
     svg = document.getElementById("svg");
     svg.addEventListener("mousemove", showControls);
     
-    screenButtons();   
+    screenButtons();
 }
 
 // Devuelve un string con el tiempo que se da en segundos.
@@ -102,8 +105,8 @@ var onProgressBarHover = function(e){
 
 // Coloca los botones en el sitio adecuado del svg para que esten cenntrados.
 function screenButtons(){
-    var svgY = svg.getBoundingClientRect().bottom;
-    var svgX = svg.getBoundingClientRect().right;
+    var svgY = svg.clientHeight;
+    var svgX = svg.clientWidth;
     
     document.getElementById("play").innerHTML = '<path class="play" fill="green" d="M ' + (svgX/2 - 10) + ' ' + (svgY/2 - 15) + ' v 30 l 25 -15 Z"/> <path class="pause" stroke-width="12" stroke="green" d="M '+ (svgX/2 - 10) + ' ' + (svgY/2 - 15) +' v 30 m 16 -30 v 30"/><circle stroke="black" fill="black" fill-opacity="0" stroke-width="12" cx="' + svgX/2 + '" cy="' + svgY/2 + '" r="' + 40 + '" onclick="toggleVideo();"/> ';
     
@@ -176,19 +179,46 @@ function backVideo() {
     }
 }
 
-// Funcion que añade el player al contenedor indicado por parametro.
-function player(div){
+// Funcion que añade el player con el video indicado por parametro.
+function player(idx){
     var s = '<div class="flex-container-col"><div class="outer"><video id="video" autobuffer muted>';
     
-    for(v of videos){
-        s += '<source src="' + v[0] + '" type="' + v[1] + '">';
+    var dir = "../video/";
+    s += '<source src="' + dir + videos[idx]["mp4"] + '" type="video/mp4">';
+    if(videos[idx]["webm"] != ""){
+        s += '<source src="' + dir + videos[idx]["webm"] + '" type="video/webm">';    
     }
-    
-    s += '<track label="español" kind="subtitles" srclang="es" src="../video/japon_es.vtt">';
-    s += '<track label="japones" kind="subtitles" srclang="jp" src="../video/japon_jp.vtt">';
-    s += '<track label="descripcion" kind="metadata" srclang="es" src="../video/japon_meta.vtt">';
+    if(videos[idx]["es"] != ""){
+        s += '<track label="español" kind="subtitles" srclang="es" src="' + dir + videos[idx]["es"] + '">';
+    }
+    if(videos[idx]["jp"] != ""){
+        s += '<track label="japones" kind="subtitles" srclang="jp" src="' + dir + videos[idx]["jp"] + '">';
+    }
+    if(videos[idx]["meta"] != ""){
+        s += '<track label="descripcion" kind="metadata" srclang="es" src="' + dir + videos[idx]["meta"] + '">';
+    }
     
     s += 'Your browser does not support the video tag</video><svg id="svg" class="screenbuttons" height="270px" width="480px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ><g id="play"></g><g id="back"></g><g id="foward"></g></svg></div><div class="flex-container-row"><div class="flex-cell-text"><span id="current">00:00</span> / <span id="duration">00:00</span></div><div class="flex-cell-full"><div class="bar-tooltip"><progress id="bar" value=0></progress><span id="bar-tooltip-span"></span></div></div></div></div>'
     
-    document.getElementById(div).innerHTML = s;
+    document.getElementById(contenedor).innerHTML = s;
+}
+
+// Funcion que recoje los videos de la web y muestra en el select.
+function getvideos(){
+    $.ajax({
+            type: "POST",
+            url: '../backend/videos.php',
+            data: {"name":name},
+            async: false,
+            success: function(data){
+                videos = JSON.parse(data);
+                
+                var s = '';
+                for (var i = 0; i < videos.length; i++){
+                    var name = videos[i]["mp4"].substr(0, videos[i]["mp4"].indexOf("."));
+                    s += '<option value="' + i + '">' + name + '</option>'
+                }
+                selector.innerHTML = s;
+            }
+    });
 }

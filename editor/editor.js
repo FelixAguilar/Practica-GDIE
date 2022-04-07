@@ -4,6 +4,7 @@ var tfin; // tiempo final segmento.
 var ttex; // Texto del segmento.
 var tlat; // Latitud del segmento.
 var tlon; // Longitud del segmento.
+var tzoo; // Zoom del mapa.
 var tdes; // Descripcion del segmento.
 var file; // archivo que se edita.
 var json; // contenido en array del archivo.
@@ -35,21 +36,22 @@ function getEndSegmentTime(){
 function addSegment(){
     pause();
     if(tini.value < tfin.value){
-        if(type){
-            if(tlat.value != "" && tlon.value != "" && tdes.value != "") {
+        if(type == "meta"){
+            if(tlat.value != "" && tlon.value != "" && tzoo.value != "" && tdes.value != "") {
                 var i = deleteSegment();
         
                 var ti = "00:" + tini.value + ".001";
                 var tf = "00:" + tfin.value + ".000";
                 var tl = tlat.value;
                 var tg = tlon.value;
+                var tz = tzoo.value;
                 var td = '"' + tdes.value + '"';
-                json.splice(i, 0, {inicio:ti, fin:tf, latitud:tl, longitud:tg, descripcion:td});
+                json.splice(i, 0, {inicio:ti, fin:tf, latitud:tl, longitud:tg, zoom:tz, descripcion:td});
                 document.getElementById("show").innerHTML = showVTT();
             } else {
                 window.alert("Introduce metadatos.");
             }
-        }else{
+        }else if(type == "sub"){
             if(ttex.value != ""){
                 var i = deleteSegment();
         
@@ -133,18 +135,25 @@ function deleteSegment(){
 // Abre un archivo o crea uno si no hay seleccionados.
 function openVTT(){
     file = document.getElementById("selectvtt").value;
-    if(file == '-'){
-        file = window.prompt('Nombre del archivo: (añade _meta o _idioma)', 'Nombre');
-        if(file != null){
-            file = file + '.vtt';
+    if(file.includes('new')){
+        var name = videos[selector.value]["mp4"].substr(0, videos[selector.value]["mp4"].indexOf("."));
+        file = file.replace('new', name);
+        file += '.vtt';
+        if(window.confirm('Nuevo archivo ' + file)){
             writeVTT(file, 'WEBVTT');
             dirVTT();
             $('#selectvtt option:contains(' + file + ')').prop({selected: true});
+        } else{
+            file = null;
         }
     }
     if(file != null){
         document.getElementById("filename").innerHTML = 'Contenido del archivo ' + file;
-        type = file.includes("meta");
+        if(file.includes("meta")){
+            type = "meta";
+        }else{
+            type = "sub";
+        }
         readVTT(file); 
         setControls();
     }
@@ -163,10 +172,7 @@ function deleteVTT(){
                 success: function(value){
                     if(value){
                         window.alert("Archivo eliminado");
-                        dirVTT();
-                        json = undefined;
-                        document.getElementById("show").innerHTML = '';
-                        document.getElementById("filename").innerHTML = 'Contenido del archivo';
+                        resetview();
                     } else {
                         window.alert("No se pudo realizar la operacion");
                     }
@@ -178,17 +184,30 @@ function deleteVTT(){
     }
 }
 
-// Muestra los archivos vtt que hay en el servidor.
+// Muestra los archivos vtt que hay en el servidor relacionados con el video.
 function dirVTT(){
+    
+    var name = videos[selector.value]["mp4"].substr(0, videos[selector.value]["mp4"].indexOf("."));
+    
     $.ajax({
             type: "POST",
             url: '../backend/dir.php',
             async: false,
+            data: {"name": name},
             success: function(data){
                 var dir = JSON.parse(data);
-                var s = '<option value="-"> nuevo archivo </option>';
+                var s = '';
                 for (var i = 0; i < dir.length; i++){
-                    s += '<option value="' + dir[i] + '">' + dir[i] + '</option>'
+                    s += '<option value="' + dir[i] + '">' + dir[i] + '</option>';
+                }
+                if(!dir.includes(name + "_es.vtt")){
+                    s += '<option value="new_es">nuevo _es.vtt</option>';
+                }
+                if(!dir.includes(name + "_jp.vtt")){
+                    s += '<option value="new_jp">nuevo _jp.vtt</option>';
+                }
+                if(!dir.includes(name + "_meta.vtt")){
+                    s += '<option value="new_meta">nuevo _meta.vtt</option>';
                 }
                 document.getElementById("selectvtt").innerHTML = s;
             }
@@ -232,14 +251,15 @@ function getVTT(){
     var s = "WEBVTT";
     for (var i = 0; i < json.length; i++){
         var obj = json[i];
-        if(type){
+        if(type == "meta"){
             s += "\n\n" + obj["inicio"] + " --> " + obj["fin"] + "\n";
             s += "{\n";
             s += '"latitude": '+ obj["latitud"] + ",\n"; 
             s += '"longitude": ' + obj["longitud"] + ",\n"; 
+            s += '"zoom": ' + obj["zoom"] + ",\n"; 
             s += '"descripcion": ' + obj["descripcion"] + "\n"; 
             s += "}";
-        } else {
+        } else if (type == "sub") {
             s += "\n\n"+ obj["inicio"] + " --> " + obj["fin"] + "\n";
             s += obj["texto"];
         }
@@ -252,12 +272,13 @@ function showVTT(){
     var s = "";
     for (var i = 0; i < json.length; i++){
         var obj = json[i];
-        if(type){
+        if(type == "meta"){
             s += obj["inicio"] + " --> " + obj["fin"] + "<br>";
             s += "latitud: " + obj["latitud"] + "<br>"; 
             s += "longitud: " + obj["longitud"] + "<br>"; 
+            s += "zoom: " + obj["zoom"] + "<br>"; 
             s += "descripcion: " + obj["descripcion"] + "<br>"; 
-        } else {
+        } else if (type == "sub"){
             s += obj["inicio"] + " --> " + obj["fin"] + "<br>";
             s += obj["texto"] + "<br>"; 
         }       
@@ -278,16 +299,34 @@ function getseconds(time){
 }
 
 function setControls(){
-    if(type){
-        document.getElementById("controls").innerHTML = '<label>Inicio sengmento:</label>&nbsp<input type="text" readonly id="inicio" value="--:--" style=" width: 100%;padding: 6px 12px;margin: 4px 0;box-sizing: border-box;border: none;background-color: #3CBC8D;color: white;"><br><label>Fin segmento:</label>&nbsp<input type="text" readonly id="fin" value="--:--"style=" width: 100%;padding: 6px 12px;margin: 4px 0;box-sizing: border-box;border: none;background-color: #3CBC8D;color: white;"><br><label>Latitud: </label><input type="text" id="Latitud"style=" width: 100%;padding: 6px 12px;margin: 4px 0;box-sizing: border-box;border: none;background-color: #3CBC8D;color: white;"><br><label>Longitud: </label><input type="text" id="Longitud"style=" width: 100%;padding: 6px 12px;margin: 4px 0;box-sizing: border-box;border: none;background-color: #3CBC8D;color: white;"><br><label>Descripcion: </label><input type="text" id="Descripcion" style=" width: 100%;padding: 6px 12px;margin: 10px 0;box-sizing: border-box;border: none;background-color: #3CBC8D;color: white;"><br><input type="button" class="btn  btn-outline-success me-2 external" id="newseg" onclick="newSegment()" value="Inicio Segmento"><input type="button" class="btn  btn-outline-success me-2 external" id="saveseg" onclick="addSegment()" value="Guardar Segmento"><input type="button" class="btn  btn-outline-success me-2 external" id="clrseg" onclick="removeSegment()" value="Eliminar Segmento">';
+    if(type == "meta"){
+        document.getElementById("controls").innerHTML = '<label>Inicio sengmento:</label>&nbsp<input type="text" readonly id="inicio" value="--:--" style=" width: 100%;padding: 6px 12px;margin: 4px 0;box-sizing: border-box;border: none;background-color: #3CBC8D;color: white;"><br><label>Fin segmento:</label>&nbsp<input type="text" readonly id="fin" value="--:--"style=" width: 100%;padding: 6px 12px;margin: 4px 0;box-sizing: border-box;border: none;background-color: #3CBC8D;color: white;"><br><label>Latitud: </label><input type="text" id="Latitud"style=" width: 100%;padding: 6px 12px;margin: 4px 0;box-sizing: border-box;border: none;background-color: #3CBC8D;color: white;"><br><label>Longitud: </label><input type="text" id="Longitud" style=" width: 100%;padding: 6px 12px;margin: 4px 0;box-sizing: border-box;border: none;background-color: #3CBC8D;color: white;"><br><label>Zoom: </label><input type="text" id="Zoom" style=" width: 100%;padding: 6px 12px;margin: 4px 0;box-sizing: border-box;border: none;background-color: #3CBC8D;color: white;"><br><label>Descripcion: </label><input type="text" id="Descripcion" style=" width: 100%;padding: 6px 12px;margin: 10px 0;box-sizing: border-box;border: none;background-color: #3CBC8D;color: white;"><br><input type="button" class="btn  btn-outline-success me-2 external" id="newseg" onclick="newSegment()" value="Inicio Segmento"><input type="button" class="btn  btn-outline-success me-2 external" id="saveseg" onclick="addSegment()" value="Guardar Segmento"><input type="button" class="btn  btn-outline-success me-2 external" id="clrseg" onclick="removeSegment()" value="Eliminar Segmento">';
         tlat = document.getElementById("Latitud");
         tlon = document.getElementById("Longitud");
         tdes = document.getElementById("Descripcion");
-    } else  {
+        tzoo = document.getElementById("Zoom");
+        tini = document.getElementById("inicio");
+        tfin = document.getElementById("fin");
+    } else if (type == "sub") {
         document.getElementById("controls").innerHTML = '<label>Inicio segmento:</label>&nbsp<input type="text" readonly id="inicio" value="--:--"style=" width: 100%;padding: 6px 12px;margin: 4px 0;box-sizing: border-box;border: none;background-color: #3CBC8D;color: white;"><br><label>Fin segmento:</label>&nbsp<input type="text" readonly id="fin" value="--:--"style=" width: 100%;padding: 6px 12px;margin: 4px 0;box-sizing: border-box;border: none;background-color: #3CBC8D;color: white;"><br><label>Texto segmento: </label><input type="text" id="texto"style=" width: 100%;padding: 6px 12px;margin: 10px 0;box-sizing: border-box;border: none;background-color: #3CBC8D;color: white;"><br><input type="button" class="btn  btn-outline-success me-2 external" id="newseg" onclick="newSegment()" value="Inicio Segmento"><input type="button" class="btn  btn-outline-success me-2 external" id="saveseg" onclick="addSegment()" value="Guardar Segmento"><input type="button" class="btn  btn-outline-success me-2 external" id="clrseg" onclick="removeSegment()" value="Eliminar Segmento">';
         ttex = document.getElementById("texto");
-    }
-    tini = document.getElementById("inicio");
-    tfin = document.getElementById("fin");
-   
+        tini = document.getElementById("inicio");
+        tfin = document.getElementById("fin");
+    } else {
+        document.getElementById("controls").innerHTML = '';
+    }  
+}
+
+function changeVideo(){
+    setvideo();
+    resetview();
+}
+
+function resetview(){
+    dirVTT();
+    document.getElementById("show").innerHTML = '';
+    document.getElementById("filename").innerHTML = 'Contenido del archivo';
+    json = undefined;
+    type = null;
+    setControls();
 }

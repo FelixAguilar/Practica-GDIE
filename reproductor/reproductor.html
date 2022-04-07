@@ -5,6 +5,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  
   <link rel="stylesheet" href="../compartido/player.css">
   <script src="../compartido/player.js"></script>
 
@@ -23,6 +25,7 @@
 <body>
   <div class="grid">
 
+
     <nav class="navbar navbar-dark bg-dark">
       <div class="container-fluid">
         <div class="justify-content-start">
@@ -30,20 +33,10 @@
           <span class="navbar-text">Grupo 22003</span>
         </div>
         <div class="justify-content-end">
+          <select id="selectvideo" class="btn  btn-outline-success me-2 external" onchange="changeVideo()"></select>
           <a class="btn  btn-outline-success me-2 external" href="../reproductor/reproductor.html"
             role="button">Reproductor</a>
           <a class="btn  btn-outline-success me-2 external" href="../editor/editor.html" role="button">Editor</a>
-        </div>
-        <div class="video dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-            data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown button
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
         </div>
       </div>
     </nav>
